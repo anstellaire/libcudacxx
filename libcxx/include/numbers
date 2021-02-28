@@ -1,0 +1,110 @@
+// -*- C++ -*-
+//===---------------------------- numeric ---------------------------------===//
+//
+// Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
+// See https://llvm.org/LICENSE.txt for license information.
+// SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
+//
+//===----------------------------------------------------------------------===//
+
+#ifndef _LIBCUDACXX_NUMBERS
+#define _LIBCUDACXX_NUMBERS
+
+#ifndef __cuda_std__
+#include <__config>
+#include <type_traits>
+#include <__pragma_push>
+#endif
+
+#if defined(_LIBCUDACXX_USE_PRAGMA_GCC_SYSTEM_HEADER)
+#pragma GCC system_header
+#endif
+
+_LIBCUDACXX_BEGIN_NAMESPACE_STD
+
+namespace numbers {
+
+    template <class T>
+    struct __illformed_false {
+        static constexpr bool value = false;
+    };
+
+    template <class T>
+    struct __illformed
+    {
+        static_assert(__illformed_false<T>::value, "A program that instantiates a primary template of a mathematical constant variable template is ill-formed.");
+    };
+
+    template<typename T, bool = std::is_floating_point<T>::value>
+    struct floating_point_dispatch
+    {
+        static constexpr T e_v =          __illformed<T>{};
+        static constexpr T log2e_v =      __illformed<T>{};
+        static constexpr T log10e_v =     __illformed<T>{};
+        static constexpr T pi_v =         __illformed<T>{};
+        static constexpr T inv_pi_v =     __illformed<T>{};
+        static constexpr T inv_sqrtpi_v = __illformed<T>{};
+        static constexpr T ln2_v =        __illformed<T>{};
+        static constexpr T ln10_v =       __illformed<T>{};
+        static constexpr T sqrt2_v =      __illformed<T>{};
+        static constexpr T sqrt3_v =      __illformed<T>{};
+        static constexpr T inv_sqrt3_v =  __illformed<T>{};
+        static constexpr T egamma_v =     __illformed<T>{};
+        static constexpr T phi_v =        __illformed<T>{};
+    };
+
+    template<typename T>
+    struct floating_point_dispatch<T, true>
+    {
+        static constexpr T e_v          = 2.718281828459045235360287471352662;
+        static constexpr T log2e_v      = 1.442695040888963407359924681001892;
+        static constexpr T log10e_v     = 0.434294481903251827651128918916605;
+        static constexpr T pi_v         = 3.141592653589793238462643383279502;
+        static constexpr T inv_pi_v     = 0.318309886183790671537767526745028;
+        static constexpr T inv_sqrtpi_v = 0.564189583547756286948079451560772;
+        static constexpr T ln2_v        = 0.693147180559945309417232121458176;
+        static constexpr T ln10_v       = 2.302585092994045684017991454684364;
+        static constexpr T sqrt2_v      = 1.414213562373095048801688724209698;
+        static constexpr T sqrt3_v      = 1.732050807568877293527446341505872;
+        static constexpr T inv_sqrt3_v  = 0.577350269189625764509148780501957;
+        static constexpr T egamma_v     = 0.577215664901532860606512090082402;
+        static constexpr T phi_v        = 1.618033988749894848204586834365638;
+    };
+
+    template <class T> _LIBCUDACXX_INLINE_VAR constexpr T e_v          = floating_point_dispatch<T>::e_v;
+    template <class T> _LIBCUDACXX_INLINE_VAR constexpr T log2e_v      = floating_point_dispatch<T>::log2e_v;
+    template <class T> _LIBCUDACXX_INLINE_VAR constexpr T log10e_v     = floating_point_dispatch<T>::log10e_v;
+    template <class T> _LIBCUDACXX_INLINE_VAR constexpr T pi_v         = floating_point_dispatch<T>::pi_v;
+    template <class T> _LIBCUDACXX_INLINE_VAR constexpr T inv_pi_v     = floating_point_dispatch<T>::inv_pi_v;
+    template <class T> _LIBCUDACXX_INLINE_VAR constexpr T inv_sqrtpi_v = floating_point_dispatch<T>::inv_sqrtpi_v;
+    template <class T> _LIBCUDACXX_INLINE_VAR constexpr T ln2_v        = floating_point_dispatch<T>::ln2_v;
+    template <class T> _LIBCUDACXX_INLINE_VAR constexpr T ln10_v       = floating_point_dispatch<T>::ln10_v;
+    template <class T> _LIBCUDACXX_INLINE_VAR constexpr T sqrt2_v      = floating_point_dispatch<T>::sqrt2_v;
+    template <class T> _LIBCUDACXX_INLINE_VAR constexpr T sqrt3_v      = floating_point_dispatch<T>::sqrt3_v;
+    template <class T> _LIBCUDACXX_INLINE_VAR constexpr T inv_sqrt3_v  = floating_point_dispatch<T>::inv_sqrt3_v;
+    template <class T> _LIBCUDACXX_INLINE_VAR constexpr T egamma_v     = floating_point_dispatch<T>::egamma_v;
+    template <class T> _LIBCUDACXX_INLINE_VAR constexpr T phi_v        = floating_point_dispatch<T>::phi_v;
+
+    _LIBCUDACXX_INLINE_VAR constexpr double e          = e_v<double>;
+    _LIBCUDACXX_INLINE_VAR constexpr double log2e      = log2e_v<double>;
+    _LIBCUDACXX_INLINE_VAR constexpr double log10e     = log10e_v<double>;
+    _LIBCUDACXX_INLINE_VAR constexpr double pi         = pi_v<double>;
+    _LIBCUDACXX_INLINE_VAR constexpr double inv_pi     = inv_pi_v<double>;
+    _LIBCUDACXX_INLINE_VAR constexpr double inv_sqrtpi = inv_sqrtpi_v<double>;
+    _LIBCUDACXX_INLINE_VAR constexpr double ln2        = ln2_v<double>;
+    _LIBCUDACXX_INLINE_VAR constexpr double ln10       = ln10_v<double>;
+    _LIBCUDACXX_INLINE_VAR constexpr double sqrt2      = sqrt2_v<double>;
+    _LIBCUDACXX_INLINE_VAR constexpr double sqrt3      = sqrt3_v<double>;
+    _LIBCUDACXX_INLINE_VAR constexpr double inv_sqrt3  = inv_sqrt3_v<double>;
+    _LIBCUDACXX_INLINE_VAR constexpr double egamma     = egamma_v<double>;
+    _LIBCUDACXX_INLINE_VAR constexpr double phi        = phi_v<double>;
+
+} // namespace numbers
+
+_LIBCUDACXX_END_NAMESPACE_STD
+
+#ifndef __cuda_std__
+#include <__pragma_pop>
+#endif //__cuda_std__
+
+#endif  // _LIBCUDACXX_NUMBERS
